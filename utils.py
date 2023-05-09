@@ -1,4 +1,5 @@
 import torch.nn.functional as functional
+import re
 
 def normalize(data):
     # not now
@@ -15,15 +16,17 @@ def slicing_window(data, W_s):
     data = functional.pad(data, pad=(0,W_s-1), value=0.0)
     return data.unfold(1, W_s, 1)
 
+def fname_sorting_key(file_name):
+    # file_name: str in the format of 'UXSY.TXT', 
+    # where X and Y are integers.
+    # return (X,Y) tuple as key in sorted() function.
+
+    file_name = file_name.split('.')[0] # remove the postfix '.TXT'
+    splited_filename = re.split(r'(\d+)',file_name)
+    return int(splited_filename[1]), int(splited_filename[3])
+
 
 
 
 if __name__ =='__main__':
-    import torch
-    test_t = torch.tensor([[1,2,3,4],[1,2,3,4],[1,2,3,4]])
-    padded_t = padding(test_t, 10)
-    print(padded_t)
-
-    sliced_windows = slicing_window(padded_t, 10)
-    print(sliced_windows)
-    print(sliced_windows.shape)
+    print(fname_sorting_key('U20S1.txt'))
