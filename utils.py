@@ -1,4 +1,5 @@
 import torch.nn.functional as functional
+import torch
 import re
 
 def normalize(data):
@@ -13,6 +14,7 @@ def padding(data, max_length):
     return data
 
 def slicing_window(data, W_s):
+    # output: (channel, max_length, W_s)
     data = functional.pad(data, pad=(0,W_s-1), value=0.0)
     return data.unfold(1, W_s, 1)
 
@@ -25,8 +27,10 @@ def fname_sorting_key(file_name):
     splited_filename = re.split(r'(\d+)',file_name)
     return int(splited_filename[1]), int(splited_filename[3])
 
-
-
+def stack(data):
+    # data of shape: (channel, max_length, W_s)
+    data = torch.cat((data[0],data[1],data[2],data[3]), 1)
+    return data
 
 if __name__ =='__main__':
     print(fname_sorting_key('U20S1.txt'))

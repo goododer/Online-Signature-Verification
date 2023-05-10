@@ -33,6 +33,8 @@ class SVC2004(Dataset):
         data = utils.padding(data, self.max_length)
         # slicing window
         data = utils.slicing_window(data, self.window_size)
+        # stack data
+        data = utils.stack(data)
         return data
 
 
@@ -42,4 +44,3 @@ if __name__ =='__main__':
     train_data = SVC2004(data_dir, 793, 10)
 
     print(train_data[10].shape)
-    print(train_data[10][0,207:209])
