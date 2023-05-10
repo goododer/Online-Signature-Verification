@@ -1,6 +1,8 @@
 import torch.nn.functional as functional
+import torch.nn as nn
 import torch
 import re
+import copy
 
 def normalize(data):
     # not now
@@ -31,6 +33,10 @@ def stack(data):
     # data of shape: (channel, max_length, W_s)
     data = torch.cat((data[0],data[1],data[2],data[3]), 1)
     return data
+
+def clones(module, N):
+    # produce N identical layers.
+    return nn.ModuleList([copy.deepcopy(module) for _ in range(N)])
 
 if __name__ =='__main__':
     print(fname_sorting_key('U20S1.txt'))
