@@ -109,4 +109,5 @@ if __name__ =='__main__':
     decoder_layer = Decoder_layer(decoder, sequential_decoder, 2)
     # 1.7 decoder_encoder
     encoder_decoder = Encoder_Decoder(encoder_layer, decoder_layer)
+    encoder_decoder.double()
 
