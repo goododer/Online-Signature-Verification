@@ -94,8 +94,7 @@ if __name__ =='__main__':
     # define some model
 
     # 1.1 first_encoder.
-    encoder = First_Encoder(W_s,C,f_c, nn.Sigmoid())
-    #encoder.double()
+    encoder = First_Encoder(W_s, C, f_c, nn.Sigmoid())
     print(encoder(train_data[0]))
     # 1.2 sequential_encoder
     sequential_encoder = Sequential_Encoder(f_c, nn.Sigmoid())

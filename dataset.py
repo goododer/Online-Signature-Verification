@@ -26,6 +26,7 @@ class SVC2004(Dataset):
         file_name = self.list_files[idx]
         f = open(self.data_dir+file_name, 'rb')
         data = np.load(f) # npy. format
+        data = data.astype(np.float32)
         f.close()
         data = torch.from_numpy(data)
 
