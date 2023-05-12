@@ -67,6 +67,7 @@ class RunManager():
     def end_run(self):
         self.tb.close()
         self.epoch_count = 0
+        print(f'run_{self.run_count} is finished')
 
     def begin_epoch(self):
         self.epoch_start_time = time.time()
@@ -151,6 +152,7 @@ if __name__ =='__main__':
 
                 m.track_loss(loss)
             m.end_epoch()
+            print(f'epoch_{epoch} is finished.')
         m.end_run()
 
     m.save('results')
