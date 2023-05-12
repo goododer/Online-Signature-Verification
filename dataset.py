@@ -37,7 +37,7 @@ class SVC2004(Dataset):
         data = data.astype(np.float32)
         f.close()
         data = torch.from_numpy(data)
-        data = torch.to(device = device, dtype = torch.float32)
+        data = data.to(device = device, dtype = torch.float32)
 
         # padding the data to the max_length
         data = utils.padding(data, self.max_length)
