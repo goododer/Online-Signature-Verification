@@ -5,6 +5,7 @@ import time
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
 from torch import optim
+import torch
 import torchvision
 import pandas as pd
 from config import params
@@ -13,6 +14,13 @@ from dataset import SVC2004
 import torch.nn.functional as F
 
 #import jason
+device = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps"
+    if torch.backends.mps.is_available()
+    else "cpu"
+)
 
 class RunBuilder():
     
@@ -110,20 +118,21 @@ class RunManager():
 
 if __name__ =='__main__':
     data_dir = './datasets/SVC2004/task1/training/'
+    print(f'Running on: {device}')
     m = RunManager()
 
     for run in RunBuilder.get_runs(params):
         # build make according to configs
-        first_encoder = models.First_Encoder(run.window_size, run.channel, run.f_c, run.activation)
-        sequential_encoder = models.Sequential_Encoder(run.f_c, run.activation)
+        first_encoder = models.First_Encoder(run.window_size, run.channel, run.f_c, run.activation).to(device)
+        sequential_encoder = models.Sequential_Encoder(run.f_c, run.activation).to(device)
 
-        first_decoder = models.First_Decoder(run.window_size, run.channel, run.f_c, run.activation)
-        sequential_decoder = models.Sequential_Decoder(run.window_size, run.channel, run.activation)
+        first_decoder = models.First_Decoder(run.window_size, run.channel, run.f_c, run.activation).to(device)
+        sequential_decoder = models.Sequential_Decoder(run.window_size, run.channel, run.activation).to(device)
 
-        encoder_layer = models.Encoder_layer(first_encoder, sequential_encoder, run.depth)
-        decoder_layer = models.Decoder_layer(first_decoder, sequential_decoder, run.depth)
+        encoder_layer = models.Encoder_layer(first_encoder, sequential_encoder, run.depth).to(device)
+        decoder_layer = models.Decoder_layer(first_decoder, sequential_decoder, run.depth).to(device)
 
-        model = models.Encoder_Decoder(encoder_layer, decoder_layer)
+        model = models.Encoder_Decoder(encoder_layer, decoder_layer).to(device)
 
         train_dataset = SVC2004(data_dir, run.max_length, run.window_size)
         loader = DataLoader(train_dataset, run.batch_size)

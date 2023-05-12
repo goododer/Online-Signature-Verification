@@ -4,9 +4,17 @@ import numpy as np
 import os
 import utils
 
+device = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps"
+    if torch.backends.mps.is_available()
+    else "cpu"
+)
+
 class SVC2004(Dataset):
     def __init__(self, data_dir, max_length=793, window_size = 10) -> None:
-        print('initializing')
+        # print('initializing')
         self.data_dir = data_dir
         self.list_files = os.listdir(self.data_dir)
         self.max_length = max_length
@@ -29,6 +37,7 @@ class SVC2004(Dataset):
         data = data.astype(np.float32)
         f.close()
         data = torch.from_numpy(data)
+        data = torch.to(device = device, dtype = torch.float32)
 
         # padding the data to the max_length
         data = utils.padding(data, self.max_length)
