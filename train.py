@@ -51,9 +51,9 @@ class RunManager():
         self.tb = SummaryWriter(comment=f'-{run}')
 
         data = next(iter(self.loader))
-        grid = torchvision.utils.make_grid(data)
+        #grid = torchvision.utils.make_grid(data)
 
-        self.tb.add_image('data', grid)
+        #self.tb.add_image('data', grid)
         self.tb.add_graph(self.network, data)
 
     def end_run(self):
